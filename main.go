@@ -2,7 +2,48 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
+
+	"github.com/refoo0/sha-256/utils"
+	"github.com/spf13/cobra"
 )
+
+var rootCmd = &cobra.Command{
+	Use:   "sha256",
+	Short: "A simple SHA-256 implementation in Go",
+	Long:  `This is a simple implementation of the SHA-256 hash function in Go.`,
+}
+
+func Execute() {
+	err := rootCmd.Execute()
+	if err != nil {
+		slog.Error("Error executing command", "err", err)
+	}
+}
+
+func init() {
+	rootCmd.AddCommand(hashCmd)
+}
+
+var hashCmd = &cobra.Command{
+	Use:   "hash",
+	Short: "Compute the SHA-256 hash of the input string",
+	Long:  `Compute the SHA-256 hash of the input string.`,
+	Args:  cobra.MinimumNArgs(1),
+	Run:   hashCmdRun,
+}
+
+func hashCmdRun(cmd *cobra.Command, args []string) {
+	if len(args) < 1 {
+		slog.Error("No input provided")
+		return
+	}
+	input := args[0]
+	hash := Hash(input)
+	fmt.Printf("Input: %s\nHash: %s\n", input, hash)
+}
+
+// Konstanten für die SHA-256 Kompressionsfunktion
 
 var k = [64]uint32{
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -23,22 +64,6 @@ func shiftRight(word uint32, n int) uint32 {
 	return word >> n
 }
 
-// Padding der Nachricht gemäß SHA-256 Spezifikation
-// [Nachricht] [100000...0] [Länge der Nachricht in Bits (64 Bit)]
-func padMessage(message []byte) []byte {
-	originalByteLen := uint64(len(message))
-	originalBitLen := originalByteLen * 8
-	message = append(message, 0x80)
-	for len(message)%64 != 56 {
-		message = append(message, 0x00)
-	}
-	for i := 7; i >= 0; i-- {
-		message = append(message, byte(originalBitLen>>(uint(i)*8)))
-	}
-
-	return message
-}
-
 func sha256(input []byte) [32]byte {
 	// IV-Werte
 	hashes := [8]uint32{
@@ -52,7 +77,7 @@ func sha256(input []byte) [32]byte {
 		0x5be0cd19,
 	}
 
-	paddedMessage := padMessage(input)
+	paddedMessage := utils.PadMessage(input)
 
 	for n := 0; n < len(paddedMessage); n += 64 {
 		var w [64]uint32
@@ -117,6 +142,9 @@ func sha256(input []byte) [32]byte {
 }
 
 func main() {
+
+	Execute()
+
 	// Aufgabe 2 a)
 	message := ""
 	expectedHash := "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -158,6 +186,7 @@ func main() {
 	m1Hash = Hashb(m1)
 	m2Hash = Hashb(m2)
 	fmt.Printf("%s\n%s\nGleicher Hash: %t\n", m1Hash, m2Hash, m1Hash == m2Hash)
+
 }
 
 func Hash(s string) string {
@@ -189,7 +218,7 @@ func sha256b(input []byte) [32]byte {
 		0x5be0cd19,
 	}
 
-	paddedMessage := padMessage(input)
+	paddedMessage := utils.PadMessage(input)
 
 	for n := 0; n < len(paddedMessage); n += 64 {
 		var w [64]uint32
