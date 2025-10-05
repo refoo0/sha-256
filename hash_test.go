@@ -45,14 +45,34 @@ func TestHash(t *testing.T) {
 
 }
 
-func TestHashCollision(t *testing.T) {
-	input1 := "ab"
-	input2 := "ba"
-	hash1 := core.SHA256([]byte(input1), 8, false)
-	hash2 := core.SHA256([]byte(input2), 8, false)
+func TestHashCollision8(t *testing.T) {
+	m1 := "Implementieren Sie in einer Programmiersprache Ihrer Wahl die kryptographische Hash-Funktion\nSHA-256. Falls Sie sich für die Programmiersprache C entscheiden, können Sie die zur Verfügung\ngestellte teilweise Implementierung ergänzen."
+	m2 := "Implementieren Sie in einer Programmiersprache Ihrer Wahl die kryptographische Hash-Funktion\nSHA-224. Falls Sie sich für die Programmiersprache C entscheiden, können Sie die zur Verfügung\ngestellte teilweise Implementierung ergänzen."
+	m1Hash := core.SHA256([]byte(m1), 8, false)
+	m2Hash := core.SHA256([]byte(m2), 8, false)
 
-	if !bytes.Equal(hash1[:], hash2[:]) {
-		t.Errorf("Hash collision detected: %x != %x", hash1, hash2)
+	if m1Hash != m2Hash {
+		t.Errorf("Hash8(%q) = %q; Hash8(%q) = %q; want equal", m1, m1Hash, m2, m2Hash)
+	}
+
+	m1 = "Schwächen Sie nun Ihre Implementierung des SHA-256 wie folgt ab:\nSetzen Sie die Ausgabe der vier logischen Funktionen Ch, Maj, Sigma0 und Sigma1 auf 0, das heißt, die\nWirkung der Funktionen wird praktisch aufgehoben.\nReduzieren Sie die Anzahl der Runden innerhalb der Kompressionsfunktion von ursprünglich 64 auf 8\nRunden.\n\nFinden Sie dann eine Kollision für die so geschwächte Version des SHA-256."
+	m2 = "Schwächen Sie nun Ihre Implementierung des SHA-224 wie folgt ab:\nSetzen Sie die Ausgabe der vier logischen Funktionen Ch, Maj, Sigma0 und Sigma1 auf 0, das heißt, die\nWirkung der Funktionen wird praktisch aufgehoben.\nReduzieren Sie die Anzahl der Runden innerhalb der Kompressionsfunktion von ursprünglich 64 auf 2\nRunden.\n\nFinden Sie dann eine Kollision für die so geschwächte Version des SHA-256."
+	m1Hash = core.SHA256([]byte(m1), 8, false)
+	m2Hash = core.SHA256([]byte(m2), 8, false)
+
+	if m1Hash != m2Hash {
+		t.Errorf("Hash8(%q) = %q; Hash8(%q) = %q; want equal", m1, m1Hash, m2, m2Hash)
+	}
+}
+
+func TestHashCollision16(t *testing.T) {
+	m1 := "Implementieren Sie in einer Programmiersprache Ihrer Wahl die kryptographische Hash-Funktion\nSHA-256. Falls Sie sich für die Programmiersprache C entscheiden, können Sie die zur Verfügung\ngestellte teilweise Implementierung ergänzen."
+	m2 := "Implementieren Sie in einer Programmiersprache Ihrer Wahl die kryptographische Hash-Funktion\nSHA-224. Falls Sie sich für die Programmiersprache C entscheiden, können Sie die zur Verfügung\ngestellte teilweise Implementierung ergänzen."
+	m1Hash := core.SHA256([]byte(m1), 16, false)
+	m2Hash := core.SHA256([]byte(m2), 16, false)
+
+	if m1Hash != m2Hash {
+		t.Errorf("Hash16(%q) = %q; Hash16(%q) = %q; want equal", m1, m1Hash, m2, m2Hash)
 	}
 
 }

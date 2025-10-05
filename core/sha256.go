@@ -39,19 +39,19 @@ func expandMessage(block []byte) [64]uint32 {
 }
 
 func compress(hashes [8]uint32, w [64]uint32, rounding bool, iterations int) [8]uint32 {
-	/* 	fmt.Println("--- Rounding through 64 iterations ---")
-	   	fmt.Println("For each of the 64 rounds:")
-	   	fmt.Println("    for first block there are 8 initial hash values ")
-	   	for i := 0; i < 8; i++ {
-	   		fmt.Println("        H[" + fmt.Sprintf("%d", i) + "] = " + fmt.Sprintf("%032b", hashes[i]) + " " + fmt.Sprintf("%08x", hashes[i]))
-	   	}
+	fmt.Println("--- Rounding through 64 iterations ---")
+	fmt.Println("For each of the 64 rounds:")
+	fmt.Println("    for first block there are 8 initial hash values ")
+	for i := 0; i < 8; i++ {
+		fmt.Println("        H[" + fmt.Sprintf("%d", i) + "] = " + fmt.Sprintf("%032b", hashes[i]) + " " + fmt.Sprintf("%08x", hashes[i]))
+	}
 
-	   	fmt.Println("    S1 := (w[i] right rotate 6) xor (w[i] right rotate 11) xor (w[i] right rotate 25)")
-	   	fmt.Println("    ch := (w[i] and f) xor ((not w[i]) and g)")
-	   	fmt.Println("    temp1 := h + S1 + ch + k[i] + w[i]")
-	   	fmt.Println("    S0 := (a right rotate 2) xor (a right rotate 13) xor (a right rotate 22)")
-	   	fmt.Println("    maj := (a and b) xor (a and c) xor (b and c)")
-	   	fmt.Println("    temp2 := S0 + maj") */
+	fmt.Println("    S1 := (w[i] right rotate 6) xor (w[i] right rotate 11) xor (w[i] right rotate 25)")
+	fmt.Println("    ch := (w[i] and f) xor ((not w[i]) and g)")
+	fmt.Println("    temp1 := h + S1 + ch + k[i] + w[i]")
+	fmt.Println("    S0 := (a right rotate 2) xor (a right rotate 13) xor (a right rotate 22)")
+	fmt.Println("    maj := (a and b) xor (a and c) xor (b and c)")
+	fmt.Println("    temp2 := S0 + maj")
 
 	a, b, c, d, e, f, g, h := hashes[0], hashes[1], hashes[2], hashes[3], hashes[4], hashes[5], hashes[6], hashes[7]
 
@@ -85,15 +85,15 @@ func compress(hashes [8]uint32, w [64]uint32, rounding bool, iterations int) [8]
 		b = a
 		a = tmp2
 
-		fmt.Println("Round " + fmt.Sprintf("%02d", i+1) + ":")
-		fmt.Println("    a = " + fmt.Sprintf("%032b", a) + " " + fmt.Sprintf("%08x", a))
-		fmt.Println("    b = " + fmt.Sprintf("%032b", b) + " " + fmt.Sprintf("%08x", b))
-		fmt.Println("    c = " + fmt.Sprintf("%032b", c) + " " + fmt.Sprintf("%08x", c))
-		fmt.Println("    d = " + fmt.Sprintf("%032b", d) + " " + fmt.Sprintf("%08x", d))
-		fmt.Println("    e = " + fmt.Sprintf("%032b", e) + " " + fmt.Sprintf("%08x", e))
-		fmt.Println("    f = " + fmt.Sprintf("%032b", f) + " " + fmt.Sprintf("%08x", f))
-		fmt.Println("    g = " + fmt.Sprintf("%032b", g) + " " + fmt.Sprintf("%08x", g))
-		fmt.Println("    h = " + fmt.Sprintf("%032b", h) + " " + fmt.Sprintf("%08x", h))
+		/* 		fmt.Println("Round " + fmt.Sprintf("%02d", i+1) + ":")
+		   		fmt.Println("    a = " + fmt.Sprintf("%032b", a) + " " + fmt.Sprintf("%08x", a))
+		   		fmt.Println("    b = " + fmt.Sprintf("%032b", b) + " " + fmt.Sprintf("%08x", b))
+		   		fmt.Println("    c = " + fmt.Sprintf("%032b", c) + " " + fmt.Sprintf("%08x", c))
+		   		fmt.Println("    d = " + fmt.Sprintf("%032b", d) + " " + fmt.Sprintf("%08x", d))
+		   		fmt.Println("    e = " + fmt.Sprintf("%032b", e) + " " + fmt.Sprintf("%08x", e))
+		   		fmt.Println("    f = " + fmt.Sprintf("%032b", f) + " " + fmt.Sprintf("%08x", f))
+		   		fmt.Println("    g = " + fmt.Sprintf("%032b", g) + " " + fmt.Sprintf("%08x", g))
+		   		fmt.Println("    h = " + fmt.Sprintf("%032b", h) + " " + fmt.Sprintf("%08x", h)) */
 
 	}
 
