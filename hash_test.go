@@ -1,6 +1,12 @@
 package main
 
-import "testing"
+import (
+	"bytes"
+	"crypto"
+	"testing"
+
+	"github.com/refoo0/sha-256/core"
+)
 
 func TestHash(t *testing.T) {
 
@@ -23,4 +29,58 @@ func TestHash(t *testing.T) {
 		}
 	}
 
+	// check with crypto/sha256
+	msg := "lorem ipsum dolor sit amet consectetur adipiscing elit lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididuntlorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididuntlorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididuntlorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut labore et dolore magna aliqua ut labore et dolore magna aliqua ut labore et dolore magna aliqua  ut labore et dolore magna aliqua  ut labore et dolore magna aliqua  ut labore et dolore magna aliqua sed do eiusmod tempor incididunt ut labore et dolore magna aliqua "
+	//msg := "a"
+	expected := crypto.SHA256.New()
+	expected.Write([]byte(msg))
+	expectedSum := expected.Sum(nil)
+
+	gotArr := core.SHA256([]byte(msg), 64, true, false)
+	gotSum := gotArr[:]
+
+	if !bytes.Equal(gotSum, expectedSum) {
+		t.Errorf("Hash(%q) = %q; want %q", msg, gotSum, expectedSum)
+	}
+
+}
+
+func TestHashCollision8(t *testing.T) {
+	m1 := "Implementieren Sie in einer Programmiersprache Ihrer Wahl die kryptographische Hash-Funktion\nSHA-256. Falls Sie sich für die Programmiersprache C entscheiden, können Sie die zur Verfügung\ngestellte teilweise Implementierung ergänzen."
+	m2 := "Implementieren Sie in einer Programmiersprache Ihrer Wahl die kryptographische Hash-Funktion\nSHA-224. Falls Sie sich für die Programmiersprache C entscheiden, können Sie die zur Verfügung\ngestellte teilweise Implementierung ergänzen."
+	m1Hash := core.SHA256([]byte(m1), 8, false, false)
+	m2Hash := core.SHA256([]byte(m2), 8, false, false)
+
+	if m1Hash != m2Hash {
+		t.Errorf("Hash8(%q) = %q; Hash8(%q) = %q; want equal", m1, m1Hash, m2, m2Hash)
+	}
+
+	m1 = "Schwächen Sie nun Ihre Implementierung des SHA-256 wie folgt ab:\nSetzen Sie die Ausgabe der vier logischen Funktionen Ch, Maj, Sigma0 und Sigma1 auf 0, das heißt, die\nWirkung der Funktionen wird praktisch aufgehoben.\nReduzieren Sie die Anzahl der Runden innerhalb der Kompressionsfunktion von ursprünglich 64 auf 8\nRunden.\n\nFinden Sie dann eine Kollision für die so geschwächte Version des SHA-256."
+	m2 = "Schwächen Sie nun Ihre Implementierung des SHA-224 wie folgt ab:\nSetzen Sie die Ausgabe der vier logischen Funktionen Ch, Maj, Sigma0 und Sigma1 auf 0, das heißt, die\nWirkung der Funktionen wird praktisch aufgehoben.\nReduzieren Sie die Anzahl der Runden innerhalb der Kompressionsfunktion von ursprünglich 64 auf 2\nRunden.\n\nFinden Sie dann eine Kollision für die so geschwächte Version des SHA-256."
+	m1Hash = core.SHA256([]byte(m1), 8, false, false)
+	m2Hash = core.SHA256([]byte(m2), 8, false, false)
+
+	if m1Hash != m2Hash {
+		t.Errorf("Hash8(%q) = %q; Hash8(%q) = %q; want equal", m1, m1Hash, m2, m2Hash)
+	}
+}
+
+func TestHashCollision16(t *testing.T) {
+	m1 := "IXBZ=AD7w.Ay?]\"D^xZ A; n!N31{ !G/iBKH_*0.0xo<mS QRRaki~ ]-}8;QyO"
+	m2 := "\"}[X=8/AR>hyBp!BuXDOVkK y8.1=45 f?& 3A)j &/ot3AKaMO4VBhd*3[8v*fx"
+	m1Hash := core.SHA256([]byte(m1), 16, false, false)
+	m2Hash := core.SHA256([]byte(m2), 16, false, false)
+
+	if m1Hash != m2Hash {
+		t.Errorf("Hash16(%q) = %q; Hash16(%q) = %q; want equal", m1, m1Hash, m2, m2Hash)
+	}
+
+	m1 = "PYL+Vpg~|}~{~ ?P\"WjzR!s~_5M*!j\\Rpq\\r^gsO@3~wP.pPXc<`2]toUU( dPH!"
+	m2 = "[r@2yRg)ve$&} v}Oabo8|w _XX!Gx4&-5|o2HpWLA(*, *\" @Pd) q\"[Jw~?B9 "
+	m1Hash = core.SHA256([]byte(m1), 16, false, false)
+	m2Hash = core.SHA256([]byte(m2), 16, false, false)
+
+	if m1Hash != m2Hash {
+		t.Errorf("Hash8(%q) = %q; Hash8(%q) = %q; want equal", m1, m1Hash, m2, m2Hash)
+	}
 }
