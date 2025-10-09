@@ -6,13 +6,15 @@ import (
 
 // Padding the message
 // [Message] [1 Bit] [0 Bits] [Length of Message in Bits (64 Bit)]
-func PadMessage(message []byte) []byte {
+func PadMessage(message []byte, verbose bool) []byte {
 
-	fmt.Println("Message in bits:\n" + BytesToBits(message) + "\n")
+	if verbose {
+		fmt.Println("Message in bits:\n" + BytesToBits(message) + "\n")
 
-	fmt.Println("--- Padding the message ---")
-	fmt.Println("Add '1' bit , then '0' bits until message length is 448 mod 512 (56 mod 64 bytes)")
-	fmt.Println("Finally, append the original message length as a 64-bit")
+		fmt.Println("--- Padding the message ---")
+		fmt.Println("Add '1' bit , then '0' bits until message length is 448 mod 512 (56 mod 64 bytes)")
+		fmt.Println("Finally, append the original message length as a 64-bit")
+	}
 	originalByteLen := uint64(len(message))
 	originalBitLen := originalByteLen * 8
 	message = append(message, 0x80)
@@ -24,7 +26,9 @@ func PadMessage(message []byte) []byte {
 	for i := 7; i >= 0; i-- {
 		message = append(message, byte(originalBitLen>>(uint(i)*8)))
 	}
-	fmt.Println("Message in bits after appending original length:\n" + BytesToBits(message))
+	if verbose {
+		fmt.Println("Message in bits after appending original length:\n" + BytesToBits(message))
+	}
 	return message
 }
 

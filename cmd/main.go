@@ -61,7 +61,7 @@ func hashCmdRun(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	hash := core.SHA256([]byte(message), iterations, rounding)
+	hash := core.SHA256([]byte(message), iterations, rounding, false)
 	fmt.Printf("Input: %s\nHash: %x\n", message, hash)
 }
 

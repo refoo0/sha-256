@@ -21,3 +21,9 @@ var InitialHashes = [8]uint32{
 	0x1f83d9ab,
 	0x5be0cd19,
 }
+
+const (
+	Green = "\033[32m"
+	Red   = "\033[31m"
+	Reset = "\033[0m"
+)

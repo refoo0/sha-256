@@ -1,5 +1,9 @@
 package core
 
+import (
+	"fmt"
+)
+
 func transformToByteArray(hashes [8]uint32) [32]byte {
 	var hash [32]byte
 	for i := 0; i < 8; i++ {
@@ -48,4 +52,18 @@ func Ch(x, y, z uint32) uint32 {
 }
 func Maj(x, y, z uint32) uint32 {
 	return (x & y) ^ (x & z) ^ (y & z)
+}
+
+func ColorPrintf(color string, format string, a ...interface{}) {
+	fmt.Printf(color+format+Reset, a...)
+}
+
+func ColorPrintDiff(hash1 string, hash2 string) {
+	for i := range len(hash1) {
+		if hash1[i] == hash2[i] {
+			ColorPrintf(Green, "%c", hash1[i])
+		} else {
+			ColorPrintf(Red, "%c", hash1[i])
+		}
+	}
 }
