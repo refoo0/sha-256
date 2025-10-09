@@ -13,7 +13,7 @@ To view the answers for the tasks from the assignment sheet, run:
 go run main.go
 ```
 
-Alternatively, you can check the `hash_test.go` file, which also contains tests related to the exercises.
+**Alternatively**, you can check the `hash_test.go` file, which also contains tests related to the exercises.
 
 ---
 
@@ -24,6 +24,12 @@ To compute a SHA-256 hash for a custom message, run:
 ```bash
 go run cmd/main.go hash <your-message>
 ```
+
+## Arguments
+
+| Argument         | Description                                        |
+| ---------------- | -------------------------------------------------- |
+| `<your-message>` | **Message to be hashed.** Example: `"hello world"` |
 
 This will print logs to help you **follow and understand the process**.
 
@@ -36,6 +42,14 @@ You can also try a weaker version of the SHA-256 function with additional parame
 ```bash
 go run cmd/main.go hash <your-message> <iterations> false
 ```
+
+## Arguments
+
+| Argument         | Description                                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| `<your-message>` | **Message to be hashed.** Example: `"hello world"`                                         |
+| `<iterations>`   | **Number of loops (iterations)** – defines how many times the hashing process is repeated. |
+| `false`          | **Uses a weaker version of the hash function** – useful for experimentation and learning.  |
 
 This allows you to experiment with reduced hashing strength for learning purposes.
 
